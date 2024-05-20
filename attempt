@@ -1,0 +1,149 @@
+---
+title: "Project"
+author: "Angie Raymundo"
+date: "2024-04-26"
+output: html_document
+---
+```{r}
+library(ggplot2)
+library(tidyverse)
+require(class)
+require(caret)
+library(plyr)
+```
+
+
+```{r}
+load("/Users/raymundoangie07/Downloads/BRFSS2022/BRFSS2022_rev.RData")
+```
+
+
+```{r}
+brfss_lgbtq <- brfss22[, c("SOMALE", "SOFEMALE", "TRNSGNDR")]
+
+brfss_lgbtq
+
+
+brfss_stu <- brfss22[, c("SMOKE100", "SMOKDAY2", "ECIGNOW2", "ALCDAY4", "AVEDRNK3", "DRNK3GE5", "MARIJAN1" )]
+
+brfss_stu
+
+
+brfss_ace <- brfss22[, c("ACEDRINK", "ACEDRUGS", "ACEPRISN", "ACEDIVRC", "ACEPUNCH", "ACEHURT1", "ACESWEAR", "ACETOUCH")]
+
+brfss_ace
+
+
+brfss_p <- cbind(brfss_lgbtq, brfss_stu, brfss_ace)
+
+brfss_p
+```
+
+
+
+```{r}
+mad <- brfss_p[c("SOMALE", "AVEDRNK3")]
+
+summary(mad)
+
+
+ggplot(mad) + 
+  aes(x = SOMALE, y = AVEDRNK3, color = SOMALE) +
+  geom_jitter() +
+  theme(legend.position = "none") 
+```
+
+
+
+```{r}
+fed <- brfss_p[c("SOFEMALE", "AVEDRNK3")]
+
+summary(fed)
+
+
+ggplot(fed) + 
+  aes(x = SOFEMALE, y = AVEDRNK3, color = SOFEMALE) +
+  geom_jitter() +
+  theme(legend.position = "none") 
+```
+
+
+
+```{r}
+tad <- brfss_p[c("TRNSGNDR", "AVEDRNK3")]
+
+summary(tad)
+
+
+ggplot(tad) + 
+  aes(x = TRNSGNDR, y = AVEDRNK3, color = TRNSGNDR) +
+  geom_jitter() +
+  theme(legend.position = "none") 
+```
+
+
+
+```{r}
+tsd <- brfss_p[c("TRNSGNDR", "SMOKDAY2")]
+
+summary(tsd)
+
+
+ggplot(tsd) + 
+  aes(x = TRNSGNDR, y = SMOKDAY2, color = TRNSGNDR) +
+  geom_jitter() +
+  theme(legend.position = "none") 
+```
+
+
+
+```{r}
+tace <- brfss_p[c("TRNSGNDR", "ACEDRINK")]
+
+summary(tace)
+
+
+ggplot(tace) + 
+  aes(x = ACEDRINK, y = TRNSGNDR, color = TRNSGNDR) +
+  geom_jitter() +
+  theme(legend.position = "none") 
+```
+
+
+
+```{r}
+tad_aov <- aov(AVEDRNK3 ~ TRNSGNDR, data = tad)
+
+summary(tad_aov)
+```
+
+
+```{r}
+mad_aov <- aov(AVEDRNK3 ~ SOMALE, data = mad)
+
+summary(mad_aov)
+```
+
+
+```{r}
+fed_aov <- aov(AVEDRNK3 ~ SOFEMALE, data = fed)
+
+summary(fed_aov)
+```
+
+
+```{r}
+tace_aov <- aov(ACEDRINK ~ TRNSGNDR, data = tace)
+
+summary(tace_aov)
+```
+
+
+```{r}
+tsd_aov <- aov(TRNSGNDR ~ SMOKDAY2, data = tsd)
+
+summary(tsd_aov)
+```
+
+
+
